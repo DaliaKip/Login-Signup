@@ -1,59 +1,61 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Alert from '@mui/material/Alert';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import axios from 'axios';
-import { useAuth } from './AuthProvider';  // Adjust path according to your project structure
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Alert from '@mui/material/Alert'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import axios from 'axios'
+import { useAuth } from './AuthProvider' // Adjust path according to your project structure
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true
 
 export const AUTH_URL = 'https://taubeventsauthservice.onrender.com/api/v1'
 export const REQUEST_TIMEOUT = 50000
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme()
 
 const SignIn = () => {
-  const navigate = useNavigate();
-  const [isAlert, setIsAlert] = useState(false);
-  const [alertType, setAlertType] = useState("error");
-  const [alertMessage, setAlertMessage] = useState("");
+  const navigate = useNavigate()
+  const [isAlert, setIsAlert] = useState(false)
+  const [alertType, setAlertType] = useState('error')
+  const [alertMessage, setAlertMessage] = useState('')
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const username = data.get('username');
-    const password = data.get('password');
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const username = data.get('username')
+    const password = data.get('password')
 
     try {
       const authResponse = await axios.post(
         `${AUTH_URL}/login`,
         { username, password },
         { timeout: REQUEST_TIMEOUT }
-      );
-      setIsAlert(true);
-      setAlertType("success");
-      setAlertMessage("Successfully logged in!");
+      )
+      setIsAlert(true)
+      setAlertType('success')
+      setAlertMessage('Successfully logged in!')
       setTimeout(() => {
-        login(authResponse.data.token);
-        navigate('/catalog');
-      }, 2000);
+        login(authResponse.data.token)
+        navigate('/catalog')
+      }, 2000)
     } catch (error) {
-      console.error("An unexpected error occurred:", error);
-      setIsAlert(true);
-      setAlertMessage(error.response?.data?.msg || "An error occurred during login.");
-      setAlertType("error");
+      console.error('An unexpected error occurred:', error)
+      setIsAlert(true)
+      setAlertMessage(
+        error.response?.data?.msg || 'An error occurred during login.'
+      )
+      setAlertType('error')
     }
-  };
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -67,13 +69,24 @@ const SignIn = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          <Avatar
+            sx={{ m: 1, bgcolor: 'secondary.main', width: 170, height: 170 }}
+          >
+            <img
+              src="/loginimage.png"
+              alt="Custom Icon"
+              style={{ width: '100%', height: '100%' }}
+            />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Welcome
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -94,11 +107,7 @@ const SignIn = () => {
               id="password"
               autoComplete="current-password"
             />
-            {isAlert && (
-              <Alert severity={alertType}>
-                {alertMessage}
-              </Alert>
-            )}
+            {isAlert && <Alert severity={alertType}>{alertMessage}</Alert>}
             <Button
               type="submit"
               fullWidth
@@ -118,7 +127,7 @@ const SignIn = () => {
         </Box>
       </Container>
     </ThemeProvider>
-  );
+  )
 }
 
-export default SignIn;
+export default SignIn
