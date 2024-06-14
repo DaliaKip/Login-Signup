@@ -31,7 +31,9 @@ const SignUp = () => {
   const [isAlert, setIsAlert] = useState(false)
   const [alertType, setAlertType] = useState('error')
   const [alertMessage, setAlertMessage] = useState('')
+  const [phoneNumber, setphoneNumber] = useState('')
   const [address, setAddress] = useState('')
+
   const [areasOfInterest, setAreasOfInterest] = useState([])
 
   const handleSubmit = async (event) => {
@@ -43,7 +45,7 @@ const SignUp = () => {
     try {
       const authResponse = await axios.post(
         `${AUTH_URL}/signup`,
-        { username, password, address, areasOfInterest },
+        { username, password, phoneNumber, address, areasOfInterest },
         { timeout: REQUEST_TIMEOUT }
       )
 
@@ -122,6 +124,19 @@ const SignUp = () => {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="phoneNumber"
+              label="Phone Number"
+              type="text"
+              id="phoneNumber"
+              autoComplete="phoneNumber"
+              value={phoneNumber}
+              onChange={(e) => setphoneNumber(e.target.value)}
+            />
+
             <FormControl fullWidth sx={{ mt: 2 }}>
               <InputLabel id="areas-of-interest-label">
                 Areas of Interest
