@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import './customStyle.css'
 
 axios.defaults.withCredentials = true
 
@@ -32,8 +33,7 @@ const SignUp = () => {
   const [alertType, setAlertType] = useState('error')
   const [alertMessage, setAlertMessage] = useState('')
   const [phoneNumber, setphoneNumber] = useState('')
-  const [address, setAddress] = useState('')
-
+  const [livingArea, setlivingArea] = useState([])
   const [areasOfInterest, setAreasOfInterest] = useState([])
 
   const handleSubmit = async (event) => {
@@ -45,7 +45,7 @@ const SignUp = () => {
     try {
       const authResponse = await axios.post(
         `${AUTH_URL}/signup`,
-        { username, password, phoneNumber, address, areasOfInterest },
+        { username, password, phoneNumber, livingArea, areasOfInterest },
         { timeout: REQUEST_TIMEOUT }
       )
 
@@ -68,13 +68,17 @@ const SignUp = () => {
     setAreasOfInterest(event.target.value)
   }
 
+  const handleLivingArea = (event) => {
+    setlivingArea(event.target.value)
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 20,
+            marginTop: 4,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -112,18 +116,7 @@ const SignUp = () => {
               id="password"
               autoComplete="current-password"
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="address"
-              label="Address"
-              type="text"
-              id="address"
-              autoComplete="address"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
+
             <TextField
               margin="normal"
               required
@@ -136,8 +129,32 @@ const SignUp = () => {
               value={phoneNumber}
               onChange={(e) => setphoneNumber(e.target.value)}
             />
+            <FormControl
+              fullWidth
+              variant="outlined"
+              className="custom-form-control"
+            >
+              <InputLabel id="livingArea">Living Area</InputLabel>
+              <Select
+                labelId="livingArea"
+                id="livingArea"
+                multiple
+                value={livingArea}
+                onChange={handleLivingArea}
+                renderValue={(selected) => selected.join(', ')}
+              >
+                <MenuItem value="North">North</MenuItem>
+                <MenuItem value="South">South</MenuItem>
+                <MenuItem value="Center">Center</MenuItem>
+              </Select>
+            </FormControl>
 
-            <FormControl fullWidth sx={{ mt: 2 }}>
+            <FormControl
+              fullWidth
+              sx={{ mt: 2 }}
+              variant="outlined"
+              className="custom-form-control"
+            >
               <InputLabel id="areas-of-interest-label">
                 Areas of Interest
               </InputLabel>
